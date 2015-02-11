@@ -1,18 +1,20 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 import csv
-from Tkinter import Tk
-import tkFileDialog
 import os
 import pandas as pd
 import numpy as np
 
+#-------------------------User Input--------------------------------------------------------------------
 user = 'sbliefnick'
-folder = 'C:\Users\%s\Desktop\A2 Data Exports' % (user)
-saveTo = 'C:\Users\%s\Desktop\A2 MAF\Master Roster.csv' % (user)
+kind = 'Math'
+#-------------------------User Input--------------------------------------------------------------------
+
+folder = 'C:\Users\%s\Desktop\%s Exports' % (user,kind)
+saveTo = 'C:\Users\%s\Desktop\%s MAF\Master Roster.csv' % (user,kind)
 
 #-----------functions-----------------------------------------------------------------------------------
 def list_files(dir):
