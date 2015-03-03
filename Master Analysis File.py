@@ -13,7 +13,7 @@ start = timeit.default_timer()
 
 #--------------------------------User Input----------------------------------------
 user = 'sbliefnick'
-kind = 'Math'
+kind = 'Current'
 includeSummative = False
 #--------------------------------User Input----------------------------------------
 
@@ -63,6 +63,10 @@ masterDF = pd.merge(masterDF, assessmentIDs, how='inner', on=['Assessment ID', '
 
 del assessmentIDs
 
+#get rid of duplicates and add a column for true sequence
+masterDF.drop_duplicates(subset=['Student ANET ID', 'Item ID'], inplace=True)
+#masterDF['True Sequence'] = masterDF['Assessment State'] + " " + masterDF['Sequence']
+
 #Merge 4
 itemDF = pd.merge(itemsByPassage, EBSRinfo, how='left', on=['Item ID'], sort=False)
 
@@ -97,11 +101,12 @@ if includeSummative == True:
 
     del summative
 
+
 masterDF.to_csv(saveTo, index=False)
 
 stop = timeit.default_timer()
 
-print(stop - start)
+print(str(stop - start) + " seconds to complete.")
 
 
 # In[ ]:

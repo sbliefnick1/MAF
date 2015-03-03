@@ -41,6 +41,7 @@ for file in allFiles:
     df['Lexile'] = df['Passage'].map(lambda x: x.split('(')[1])
     new_df['Lexile'] = df['Lexile'].map(lambda x: x.strip(' N/A)'))
     new_df['Item ID'] = df['Item ID'].map(lambda x: x.split('_')[1])
+    new_df['Genre'] = df['Genre']
     masterDF = masterDF.append(new_df)
     del new_df
     
