@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 import csv
 import os
@@ -9,8 +9,8 @@ import pandas as pd
 import numpy as np
 
 user = 'sbliefnick'
-folder = 'C:\Users\%s\Desktop\Distractor Guides' % (user)
-saveTo = 'C:\Users\%s\Desktop\ELA MAF\Items by Passage.csv' % (user)
+folder = 'C:\Users\%s\Desktop\Core Yearly Data\Distractor Guides' % (user)
+saveTo = 'C:\Users\%s\Desktop\Items by Passage.csv' % (user)
 
 #-----------functions-----------------------------------------------------------------------------------
 def list_files(dir):
@@ -33,11 +33,16 @@ masterDF = pd.DataFrame()
 for file in allFiles:
     print(file)
     
+    new_df = pd.DataFrame(columns={'Passage', 'Lexile', 'Item ID'})
+    
     df = pd.read_csv(file, usecols=[1,2,3])
     df.rename(columns={'Item Code for Data Sets': 'Item ID', 'Passage\n(Lexile)': 'Passage'}, inplace=True)
-    df['Passage'] = df['Passage'].map(lambda x: x.lstrip('').rstrip('(N/A1234567890 )\n'))
-    df['Item ID'] = df['Item ID'].map(lambda x: x.split('_')[1])
-    masterDF = masterDF.append(df)
+    new_df['Passage'] = df['Passage'].map(lambda x: x.lstrip('').rstrip('(N/A1234567890 )\n'))
+    df['Lexile'] = df['Passage'].map(lambda x: x.split('(')[1])
+    new_df['Lexile'] = df['Lexile'].map(lambda x: x.strip(' N/A)'))
+    new_df['Item ID'] = df['Item ID'].map(lambda x: x.split('_')[1])
+    masterDF = masterDF.append(new_df)
+    del new_df
     
 masterDF.drop_duplicates(subset=['Item ID'], inplace=True)    
 masterDF.to_csv(saveTo, index=False)
