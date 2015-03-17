@@ -1,16 +1,19 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 import csv
 import os
 import pandas as pd
 import numpy as np
+import timeit
+
+start = timeit.default_timer()
 
 #-------------------------User Input--------------------------------------------------------------------
 user = 'sbliefnick'
-kind = 'Math'
+kind = 'Current'
 #-------------------------User Input--------------------------------------------------------------------
 
 folder = 'C:\Users\%s\Desktop\%s Exports' % (user,kind)
@@ -43,7 +46,10 @@ allFiles = list_files(folder)
 #master data frame to contain all scores
 masterRoster = pd.DataFrame()
 
+fileCount = 0
+
 for file in allFiles:
+    fileCount += 1
     print(file)
     
     if ' ELA ' in file:
@@ -59,6 +65,8 @@ for file in allFiles:
     
     # get rid of unnecessary headers; only read in relevant columns
     df = pd.read_csv(file, header=3, usecols=['School ANET ID', 'School Name', 'State', 'District', 'Cluster',                                               'Student ANET ID', 'Interim Grade', 'Race', 'Free Reduced Lunch',                                               'Limited English Proficiency', 'Special Education',                                               proficiency, period, teacherFN, teacherLN],                             na_values=['null', 'N/A'])
+    
+    df.rename(columns={teacherFN: 'Teacher First Name', teacherLN: 'Teacher Last Name', period: 'Period Name'}, inplace=True)
     
     #add in a column for Subject
     df['Subject'] = subject
@@ -84,8 +92,11 @@ preferredColumns = ['School ID', 'School Name', 'Network State', 'District', 'Di
 
 masterRoster = set_column_sequence(masterRoster, preferredColumns)
 
-
 masterRoster.to_csv(saveTo, index=False)
+
+stop = timeit.default_timer()
+
+print(str(fileCount) + " files accessed. \n" + str(stop - start) + " seconds to complete.")
 
 
 # In[ ]:

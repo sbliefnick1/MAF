@@ -1,16 +1,19 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 import csv
 import os
 import pandas as pd
 import numpy as np
+import timeit
+
+start = timeit.default_timer()
 
 #-------------------------User Input--------------------------------------------------------------------
 user = 'sbliefnick'
-kind = 'Math'
+kind = 'Current'
 #-------------------------User Input--------------------------------------------------------------------
 
 folder = 'C:\Users\%s\Desktop\%s Exports' % (user,kind)
@@ -46,11 +49,17 @@ allFiles = list_files(folder)
 #master DF to hold all info
 responseTable = pd.DataFrame()
 
+fileCount = 0
+
 for file in allFiles:
+    fileCount += 1
     print(file)
-     # get rid of unnecessary headers and weird extra column at the end
+     # get rid of unnecessary headers
     df = pd.read_csv(file, header=3, na_values=['null', 'N/A'])
-    df = df.iloc[:,:-1]
+    
+    # get rid of extra column if necessary
+    if 'Unnamed: ' in df.columns[-1]:
+        df = df.iloc[:,:-1]
     
     #figure out the number of questions
     numQ = (len(df.columns) - 34) / 2
@@ -106,14 +115,12 @@ for file in allFiles:
     newdf['Cycle'] = cycle
     
     responseTable = responseTable.append(newdf)
-    
 
 responseTable.to_csv(saveTo, index=False)
 
+stop = timeit.default_timer()
 
-# In[1]:
-
-
+print(str(fileCount) + " files accessed. \n" + str(stop - start) + " seconds to complete.")
 
 
 # In[ ]:

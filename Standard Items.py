@@ -8,8 +8,8 @@ import pandas as pd
 import os                                                                                                             
 
 user = 'sbliefnick'
-folder = 'C:\Users\%s\Desktop\Aggregated Data Exports' % (user)
-saveTo = 'C:\Users\%s\Desktop\MAF Test\Standard Items.csv' % (user)
+folder = 'C:\Users\%s\Desktop\Core Yearly Data\Data Exports' % (user)
+saveTo = 'C:\Users\%s\Desktop\Core Yearly Data\Standard Items.csv' % (user)
 
 #-------------functions------------------------------------------------------------
 def list_files(dir):                                                                                                  
